@@ -29,7 +29,7 @@ class FoodController extends Controller
      */
     public function index()
     {
-        $data = $this->events->index();
+        $data = $this->food->index()->query()->paginate(10);
         return FoodResource::collection($data);
     }
 

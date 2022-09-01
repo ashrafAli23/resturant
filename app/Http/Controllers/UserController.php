@@ -28,7 +28,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        return $this->user->index();
+        $data = $this->user->index()->query()->paginate(10);
+        return $this->dataResponse(['data' => $data], Response::HTTP_OK);
     }
 
 

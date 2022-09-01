@@ -29,7 +29,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $data = $this->category->index();
+        $data = $this->category->index()->query()->paginate(10);
         return CategoryResource::collection($data);
     }
 

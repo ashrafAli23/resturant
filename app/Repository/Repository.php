@@ -17,7 +17,7 @@ class Repository implements RepositoryInterface
 
     public function index()
     {
-        return $this->model->query()->paginate(10);
+        return $this->model;
     }
 
     public function create(array $data)

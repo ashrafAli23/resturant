@@ -29,7 +29,7 @@ class BlogController extends Controller
      */
     public function index()
     {
-        $data = $this->blogs->index();
+        $data = $this->blogs->index()->query()->paginate(10);
         return EventsResource::collection($data);
     }
 

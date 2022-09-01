@@ -30,7 +30,7 @@ class EventsController extends Controller
      */
     public function index()
     {
-        $data = $this->events->index();
+        $data = $this->events->index()->query()->paginate(10);
         return EventsResource::collection($data);
     }
 

@@ -31,7 +31,7 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        $data = $this->company->index();
+        $data = $this->company->index()->query()->paginate(10);
         return CompanyResource::collection($data);
     }
 
