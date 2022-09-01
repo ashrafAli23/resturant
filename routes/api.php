@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -43,6 +44,11 @@ Route::middleware(['lang', 'api_password'])->group(function () {
          * Category CRUD
          */
         Route::apiResource('/category', CategoryController::class);
+
+        /**
+         * Company CRUD
+         */
+        Route::apiResource('/company', CompanyController::class);
 
 
         // Route::apiResource('/menu',)
