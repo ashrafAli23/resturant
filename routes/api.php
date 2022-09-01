@@ -5,9 +5,8 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\EventsController;
+use App\Http\Controllers\FoodController;
 use App\Http\Controllers\UserController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -56,10 +55,8 @@ Route::middleware(['lang', 'api_password'])->group(function () {
         //  Blogs CRUD
         Route::apiResource('/blog', BlogController::class);
 
-
-        // Route::apiResource('/menu',)
-        // Route::apiResource('/menu',)
-        // Route::apiResource('/menu',)
+        // Food CRUD
+        Route::apiResource('/food', FoodController::class);
 
 
 
