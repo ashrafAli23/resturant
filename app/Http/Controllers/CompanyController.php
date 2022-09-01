@@ -86,7 +86,7 @@ class CompanyController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'title' => 'required|string|min:6',
+            'title' => 'required|unique:companies,title|min:6',
         ]);
 
         $data = $this->company->show($id);

@@ -24,7 +24,7 @@ class CompanyRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|string|min:6',
+            'title' => 'required|unique:companies,title|min:6',
             'image' => 'required|file',
         ];
     }
