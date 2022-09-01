@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\EventsController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -34,21 +35,25 @@ Route::middleware(['lang', 'api_password'])->group(function () {
     // Admin Dashboard
     Route::middleware(['auth:sanctum', 'abilities:admin-access'])->group(function () {
 
-        /**
-         * Users CRUD
-         */
+
+        //  Users CRUD
         Route::apiResource('/user', UserController::class);
         Route::put('/change-password/{id}', [UserController::class, 'updatePassword']);
 
-        /**
-         * Category CRUD
-         */
+
+        //  Category CRUD
         Route::apiResource('/category', CategoryController::class);
 
-        /**
-         * Company CRUD
-         */
+
+        //  Company CRUD
         Route::apiResource('/company', CompanyController::class);
+
+
+        // Events CRUD
+        Route::apiResource('/event', EventsController::class);
+
+        //  Blogs CRUD
+        Route::apiResource('/blog', EventsController::class);
 
 
         // Route::apiResource('/menu',)
