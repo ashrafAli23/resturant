@@ -41,11 +41,6 @@ class UserController extends Controller
     public function store(UserRequest $request)
     {
         if (auth()->user()->role === 'super-admin') {
-            $checkEmail = User::where('email', $request->email)->first();
-
-            if ($checkEmail) {
-                return $this->errorResponse(__("Already exists"), Response::HTTP_BAD_REQUEST);
-            }
             try {
                 DB::beginTransaction();
                 $this->user->create([
