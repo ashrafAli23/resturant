@@ -25,7 +25,7 @@ class UserRequest extends FormRequest
     {
         return [
             'name' => 'required|min:6|string',
-            'email' => 'required|email',
+            'email' => 'required|unique:users,email|email',
             'password' => 'required|min:6'
         ];
     }
