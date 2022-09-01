@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\EventsController;
@@ -53,7 +54,7 @@ Route::middleware(['lang', 'api_password'])->group(function () {
         Route::apiResource('/event', EventsController::class);
 
         //  Blogs CRUD
-        Route::apiResource('/blog', EventsController::class);
+        Route::apiResource('/blog', BlogController::class);
 
 
         // Route::apiResource('/menu',)

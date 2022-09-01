@@ -15,6 +15,7 @@ class EventsResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'title' => app()->getLocale() === 'ar' ? $this->ar_title : $this->en_title,
             'description' => app()->getLocale() === 'ar' ? $this->ar_description : $this->en_description,
             'image' => $this->image,
