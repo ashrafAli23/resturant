@@ -31,9 +31,27 @@ Route::middleware(['lang', 'api_password'])->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
 
 
+    /**
+     * Main Routes
+     */
+
+    Route::get('/company', [CompanyController::class, 'index']);
+    Route::get('/company/{id}', [CompanyController::class, 'show']);
+
+    Route::get('/blog', [BlogController::class, 'index']);
+    Route::get('/blog/{id}', [BlogController::class, 'show']);
+
+    Route::get('/event', [EventsController::class, 'index']);
+    Route::get('/event/{id}', [EventsController::class, 'show']);
+
+    Route::get('/category', [CategoryController::class, 'index']);
+    Route::get('/category/{id}', [CategoryController::class, 'show']);
+
+    Route::get('/food', [FoodController::class, 'index']);
+    Route::get('/food/{id}', [FoodController::class, 'show']);
 
     // Admin Dashboard
-    Route::middleware(['auth:sanctum', 'abilities:admin-access'])->group(function () {
+    Route::prefix('dashboard')->middleware(['auth:sanctum', 'abilities:admin-access'])->group(function () {
 
 
         //  Users CRUD

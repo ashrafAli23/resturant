@@ -29,9 +29,14 @@ class CompanyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data = $this->company->index()->query()->paginate(10);
+        $request->validate([
+            'page' => 'required|numeric'
+        ]);
+
+        $perPage = $request->perPage ?? 10;
+        $data = $this->company->index()->query()->paginate($perPage);
         return CompanyResource::collection($data);
     }
 

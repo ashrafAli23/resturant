@@ -27,10 +27,16 @@ class BlogController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data = $this->blogs->index()->query()->paginate(10);
-        return EventsResource::collection($data);
+        $request->validate([
+            'page' => 'required|numeric'
+        ]);
+
+        $perPage = $request->perPage ?? 10;
+        $data = $this->blogs->index()->query()->paginate($perPage);
+
+        return $this->dataResponse(['data' => $data], Response::HTTP_OK);
     }
 
 
@@ -73,7 +79,8 @@ class BlogController extends Controller
         if (!$data) {
             return $this->errorResponse(__('Not found'), Response::HTTP_NOT_FOUND);
         }
-        return  new EventsResource($data);
+
+        return  $this->dataResponse(['data', $data], Response::HTTP_OK);
     }
 
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Interface\RepositoryInterface;
 use App\Http\Requests\FoodRequest;
+use App\Http\Resources\CategoryResource;
 use App\Http\Resources\FoodResource;
 use App\Models\Food;
 use App\Repository\Repository;
@@ -27,10 +28,42 @@ class FoodController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data = $this->food->index()->query()->paginate(10);
-        return FoodResource::collection($data);
+        $request->validate([
+            'page' => 'required|numeric'
+        ]);
+
+        $perPage = $request->perPage ?? 10;
+        $foods = $this->food->index();
+        $foods_querey = $foods->with('category');
+        // query()->with('category');
+
+        if ($request->search) {
+            if (app()->getLocale() === 'en') {
+                $foods_querey->where('en_title', 'LIKE', '%' . $request->search . '%');
+            } else {
+                $foods_querey->where('ar_title', 'LIKE', '%' . $request->search . '%');
+            }
+        }
+
+        if ($request->category) {
+            $foods_querey->whereHas('category', function ($query) use ($request) {
+                if (app()->getLocale() === 'en') {
+                    $query->where('en_title', $request->category);
+                } else {
+                    $query->where('ar_title', $request->category);
+                }
+            });
+        }
+
+        if ($request->orderBy && in_array($request->orderBy, ['id', 'created_at'])) {
+            $foods_querey->orderBY($request->orderBy, 'desc');
+        }
+
+        $foods_data = $foods_querey->paginate($perPage);
+
+        return $this->dataResponse(['data', $foods_data], Response::HTTP_OK);
     }
 
 
@@ -69,11 +102,14 @@ class FoodController extends Controller
      */
     public function show($id)
     {
-        $data = $this->food->show($id);
+        $data = Food::with('category')->where('id', $id)->first();
+
         if (!$data) {
             return $this->errorResponse(__('Not found'), Response::HTTP_NOT_FOUND);
         }
-        return  new FoodResource($data);
+
+
+        return  $this->dataResponse(['data' => $data], Response::HTTP_OK);
     }
 
 

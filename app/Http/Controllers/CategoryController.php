@@ -27,10 +27,22 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data = $this->category->index()->query()->paginate(10);
-        return CategoryResource::collection($data);
+        $request->validate([
+            'page' => 'required|numeric'
+        ]);
+
+        $perPage = $request->perPage ?? 10;
+
+        $data = $this->category->index();
+        if ($request->food) {
+            $query_data = $data->with('food')->paginate($perPage);
+        } else {
+            $query_data = $data->query()->paginate($perPage);
+        }
+
+        return $this->dataResponse(['data', $query_data], Response::HTTP_OK);
     }
 
 
@@ -71,7 +83,10 @@ class CategoryController extends Controller
         if (!$data) {
             return $this->errorResponse(__('Not found'), Response::HTTP_NOT_FOUND);
         }
-        return  new CategoryResource($data);
+
+
+
+        return  $this->dataResponse(['data', $data], Response::HTTP_OK);
     }
 
 

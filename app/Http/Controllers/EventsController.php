@@ -9,6 +9,7 @@ use App\Models\Events;
 use App\Repository\Repository;
 use App\Traits\GeneralResponse;
 use App\Traits\UploadFiles;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -28,10 +29,16 @@ class EventsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data = $this->events->index()->query()->paginate(10);
-        return EventsResource::collection($data);
+        $request->validate([
+            'page' => 'required|numeric'
+        ]);
+
+        $perPage = $request->perPage ?? 10;
+        $data = $this->events->index()->query()->paginate($perPage);
+
+        return $this->dataResponse(['data', $data], Response::HTTP_OK);
     }
 
 
@@ -75,7 +82,8 @@ class EventsController extends Controller
         if (!$data) {
             return $this->errorResponse(__('Not found'), Response::HTTP_NOT_FOUND);
         }
-        return  new EventsResource($data);
+
+        return  $this->dataResponse(['data', $data], Response::HTTP_OK);
     }
 
 

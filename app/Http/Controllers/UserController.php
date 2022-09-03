@@ -26,9 +26,15 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data = $this->user->index()->query()->paginate(10);
+        $request->validate([
+            'page' => 'required|numeric'
+        ]);
+
+        $perPage = $request->perPage ?? 10;
+
+        $data = $this->user->index()->query()->paginate($perPage);
         return $this->dataResponse(['data' => $data], Response::HTTP_OK);
     }
 
